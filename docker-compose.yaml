@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./infra/api-gateway:/etc/nginx/conf.d
+      - ./nginx/www:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - identity
+
+  identity:
+    build:
+      context: .
+      dockerfile: apps/identity-service/Dockerfile
+    env_file:
+      - apps/identity-service/.env
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./apps/identity-service:/app/apps/identity-service
+      - /app/apps/identity-service/node_modules
+    environment:
+      NODE_ENV: development
+
+
+
+
