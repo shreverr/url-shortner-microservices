@@ -11,5 +11,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": false
-  }
+  },
+  "exclude": ["node_modules", "drizzle.config.ts"]
 }

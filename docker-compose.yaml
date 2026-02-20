@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   nginx:
     image: nginx:latest
@@ -8,22 +7,38 @@ services:
       - ./nginx/www:/var/www/html
     ports:
       - "80:80"
-    depends_on:
-      - identity
+  #   depends_on:
+  #     - identity
 
-  identity:
-    build:
-      context: .
-      dockerfile: apps/identity-service/Dockerfile
-    env_file:
-      - apps/identity-service/.env
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./apps/identity-service:/app/apps/identity-service
-      - /app/apps/identity-service/node_modules
+  # identity:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/identity-service/Dockerfile
+  #   env_file:
+  #     - apps/identity-service/.env
+  #   ports:
+  #     - "3001:3001"
+  #   volumes:
+  #     - ./apps/identity-service:/app/apps/identity-service
+  #     - /app/apps/identity-service/node_modules
+  #   environment:
+  #     NODE_ENV: development
+
+  postgres:
+    image: postgres:16
+    container_name: identity-db
+    restart: unless-stopped
     environment:
-      NODE_ENV: development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: identity
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
 
 
 
